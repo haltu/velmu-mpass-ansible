@@ -1,4 +1,4 @@
 .vagrant/
-.velmu.retry
+velmu.retry
 group_vars/vault
 *.swp
