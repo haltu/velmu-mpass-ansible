@@ -1,0 +1,61 @@
+---
+postgresql_databases:
+  - name: "{{ vault_postgresql_database }}"
+postgresql_users:
+  - name: "{{ vault_postgresql_user }}"
+    password: "{{ vault_postgresql_password }}"
+
+redis_requirepass: "{{ vault_redis_password }}"
+
+supervisor_user: "{{ vault_supervisor_user }}"
+supervisor_password: "{{ vault_supervisor_password }}"
+supervisor_started: true
+supervisor_enabled: true
+
+supervisor_programs:
+  - name: 'bew_celery'
+    command: /home/bew/bew/bin/newrelic-admin run-program /home/bew/bew/bin/celery worker -A project.celery_app
+    state: present
+    configuration: |
+      environment=LANG="en_US.utf8", LC_ALL="en_US.UTF-8", LC_LANG="en_US.UTF-8", DJANGO_SETTINGS_MODULE="local_settings", NEW_RELIC_CONFIG_FILE="newrelic.ini"
+      autorestart=true
+      autostart=True
+      directory=/home/bew/bew
+      killasgroup=true
+      numprocs=1
+      priority=998
+      redirect_stderr=true
+      startsecs=10
+      stderr_logfile=syslog
+      stdout_logfile=syslog
+      stopwaitsecs=600
+      user=bew
+  - name: 'bew_celerybeat'
+    command: /home/bew/bew/bin/newrelic-admin run-program /home/bew/bew/bin/celery beat -A project.celery_app
+    state: present
+    configuration: |
+      environment=LANG="en_US.utf8", LC_ALL="en_US.UTF-8", LC_LANG="en_US.UTF-8", DJANGO_SETTINGS_MODULE="local_settings", NEW_RELIC_CONFIG_FILE="newrelic.ini"
+      autorestart=true
+      autostart=True
+      directory=/home/bew/bew
+      killasgroup=true
+      numprocs=1
+      priority=998
+      redirect_stderr=true
+      startsecs=10
+      stderr_logfile=syslog
+      stdout_logfile=syslog
+      stopwaitsecs=600
+      user=bew
+  - name: 'bew_gunicorn'
+    command: /home/bew/bew/bin/newrelic-admin run-program /home/bew/bew/bin/gunicorn --bind 0.0.0.0:8001 -w 2 --max-requests 1000 -t 120 --env DJANGO_SETTINGS_MODULE=local_settings project.wsgi:application
+    state: present
+    configuration: |
+      environment=LANG="en_US.utf8", LC_ALL="en_US.UTF-8", LC_LANG="en_US.UTF-8", HTTPS="on", DJANGO_SETTINGS_MODULE="local_settings", NEW_RELIC_CONFIG_FILE="newrelic.ini"
+      autorestart=true
+      autostart=true
+      directory=/home/bew/bew
+      redirect_stderr=true
+      stderr_logfile=syslog
+      stdout_logfile=syslog
+      user=bew

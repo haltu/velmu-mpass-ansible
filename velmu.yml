@@ -1,0 +1,30 @@
+---
+- hosts: localhost
+  remote_user: root
+
+  tasks:
+  - group:
+      name: bew
+      state: present
+
+  - user:
+      name: bew
+      comment: "BEW Service"
+      group: bew
+
+  vars_files:
+    - group_vars/vars
+    - group_vars/vault
+
+  roles:
+  - geerlingguy.repo-epel
+  - geerlingguy.pip
+  - geerlingguy.git
+  - geerlingguy.postgresql
+  - geerlingguy.rabbitmq
+  - geerlingguy.redis
+  - geerlingguy.memcached
+#  - geerlingguy.supervisor
+#  - geerlingguy.certbot
+  - CSCfi.apache
+  - CSCfi.shibboleth-sp
