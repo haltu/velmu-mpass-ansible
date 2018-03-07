@@ -3,28 +3,60 @@
   remote_user: root
 
   tasks:
-  - group:
+  - name: Create group bew
+    group:
       name: bew
       state: present
-
-  - user:
+  - name: Create user bew
+    user:
       name: bew
       comment: "BEW Service"
       group: bew
+  - name: Install Buildout
+    pip:
+      name: zc.buildout
+      version: 2.9.5
+  - name: Install Mercurial
+    yum:
+      name: mercurial
+  - name: Add haltuhg to /etc/hosts
+    lineinfile:
+      path: /etc/hosts
+      line: "104.192.143.1 bitbucket.org haltuhg"
+      state: present
+  - name: Create bew'ss .ssh
+    file:
+      path: /home/bew/.ssh
+      state: directory
+      owner: bew
+      group: bew
+      mode: 0700
+  - name: Import SSH known hosts
+    known_hosts:
+      path: /home/bew/.ssh/known_hosts
+      name: haltuhg
+      key: "haltuhg ssh-rsa AAAAB3NzaC1yc2EAAAABIwAAAQEAubiN81eDcafrgMeLzaFPsw2kNvEcqTKl/VqLat/MaB33pZy0y3rJZtnqwR2qOOvbwKZYKiEO1O6VqNEBxKvJJelCq0dTXWT5pbO2gDXC6h6QDXCaHo6pOHGPUy+YBaGQRGuSusMEASYiWunYN0vCAI8QaXnWMXNMdFP3jHAJH0eDsoiGnLPBlBp4TNm6rYI74nMzgz3B9IikW4WVK+dc8KZJZWYjAuORU3jc1c/NPskD2ASinf8v3xnfXeukU0sJ5N6m5E8VLjObPEO+mN2t/FZTMZLiFqPWc/ALSqnMnnhwrNi2rbfg/rd/IpL8Le3pSBne8+seeFVBoGqzHM9yXw=="
+  - name: Set known hosts permissions
+    file:
+      path: /home/bew/.ssh/known_hosts
+      owner: bew
+      group: bew
+      mode: 0600
 
   vars_files:
     - group_vars/vars
     - group_vars/vault
 
-  roles:
-  - geerlingguy.repo-epel
-  - geerlingguy.pip
-  - geerlingguy.git
-  - geerlingguy.postgresql
-  - geerlingguy.rabbitmq
-  - geerlingguy.redis
-  - geerlingguy.memcached
+# disabled temporarily for faster debug
+#  roles:
+#  - geerlingguy.repo-epel
+#  - geerlingguy.pip
+#  - geerlingguy.git
+#  - geerlingguy.postgresql
+#  - geerlingguy.rabbitmq
+#  - geerlingguy.redis
+#  - geerlingguy.memcached
 #  - geerlingguy.supervisor
 #  - geerlingguy.certbot
-  - CSCfi.apache
-  - CSCfi.shibboleth-sp
+#  - CSCfi.apache
+#  - CSCfi.shibboleth-sp
