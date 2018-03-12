@@ -2,7 +2,7 @@
 - hosts: localhost
   remote_user: root
 
-  tasks:
+  pre_tasks:
   - name: Install mercurial
     yum:
       name: mercurial
@@ -12,9 +12,6 @@
   - name: Install postgresql-devel
     yum:
       name: postgresql-devel
-  - name: Install python-virtualenv
-    yum:
-      name: python-virtualenv
   - name: Install libjpeg-devel
     yum:
       name: libjpeg-devel
@@ -73,21 +70,24 @@
       owner: bew
       group: bew
       mode: 0644
+  - lineinfile:
+      path: /home/bew/.bash_profile
+      line: "source $HOME/python/bin/activate"
 
   vars_files:
     - group_vars/vars
     - group_vars/vault
 
-# disabled temporarily for faster debug
-#  roles:
-#  - geerlingguy.repo-epel
-#  - geerlingguy.pip
-#  - geerlingguy.git
-#  - geerlingguy.postgresql
-#  - geerlingguy.rabbitmq
-#  - geerlingguy.redis
-#  - geerlingguy.memcached
-#  - geerlingguy.supervisor
-#  - geerlingguy.certbot
-#  - CSCfi.apache
-#  - CSCfi.shibboleth-sp
+  roles:
+  - geerlingguy.repo-epel
+  - geerlingguy.pip
+  - geerlingguy.git
+  - geerlingguy.postgresql
+  - geerlingguy.rabbitmq
+  - geerlingguy.redis
+  - geerlingguy.memcached
+  - geerlingguy.supervisor
+  - geerlingguy.certbot
+  - CSCfi.apache
+  - CSCfi.shibboleth-sp
+  - cchurch.virtualenv

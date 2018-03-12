@@ -1,3 +1,4 @@
+- src: cchurch.virtualenv
 - src: CSCfi.apache
 - src: CSCfi.shibboleth-sp
 - src: geerlingguy.certbot

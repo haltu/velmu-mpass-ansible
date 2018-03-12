@@ -1,2 +1,3 @@
 setuptools==38.1.0
 zc.buildout==2.9.5
+librabbitmq==1.6.1

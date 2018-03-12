@@ -59,3 +59,8 @@ supervisor_programs:
       stderr_logfile=syslog
       stdout_logfile=syslog
       user=bew
+
+virtualenv_user: bew
+virtualenv_path: /home/bew/python
+virtualenv_requirements:
+  - /srv/ansible/files/requirements.txt
