@@ -70,7 +70,15 @@
       owner: bew
       group: bew
       mode: 0644
-  - lineinfile:
+  - name: Insert local_settings.py
+    template:
+      src: /srv/ansible/files/local_settings.py.j2
+      dest: /home/bew/local_settings.py
+      owner: bew
+      group: bew
+      mode: 0644
+  - name: Activate bew's virtualenv
+    lineinfile:
       path: /home/bew/.bash_profile
       line: "source $HOME/python/bin/activate"
 

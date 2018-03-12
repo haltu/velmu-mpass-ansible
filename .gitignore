@@ -2,3 +2,4 @@
 velmu.retry
 group_vars/vault
 *.swp
+*.sql

@@ -1,0 +1,45 @@
+from project.development import *
+ALLOWED_HOSTS = ['127.0.0.1', 'localhost']
+DEBUG=True
+
+DATABASES = {
+  'default': {
+    'ENGINE': 'django.db.backends.postgresql_psycopg2',
+    'NAME': '{{ vault_postgresql_database }}',
+    'USER': '{{ vault_postgresql_user }}',
+    'PASSWORD': '{{ vault_postgresql_password }}',
+    'HOST': 'localhost',
+    'PORT': '5432',
+  }
+}
+
+CELERY_BROKER_URL = 'amqp://{{ vault_rabbitmq_user }}:{{ vault_rabbitmq_password }}@localhost:5672/dev'
+
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'loggers': {
+      '': {
+        'level': 'DEBUG',
+        'handlers': ['console'],
+        'filters': ['default'],
+      },
+    },
+    'formatters': {
+        'verbose': {
+            'format': '%(levelname)s %(asctime)s %(module)s %(process)d %(thread)d %(message)s %(data)s'
+        },
+    },
+    'filters': {
+      'default': {
+        '()': 'project.logging_helpers.Filter',
+      },
+    },
+    'handlers': {
+        'console': {
+            'class': 'logging.StreamHandler',
+            'formatter': 'verbose',
+            'filters': ['default'],
+        }
+    },
+}
