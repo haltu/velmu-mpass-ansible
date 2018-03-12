@@ -1,4 +1,7 @@
 ---
+bew_fqdn: demo.velmu.fi
+bew_port: 8001
+
 postgresql_databases:
   - name: "{{ vault_postgresql_database }}"
 postgresql_users:
