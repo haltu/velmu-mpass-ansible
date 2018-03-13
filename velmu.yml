@@ -77,6 +77,13 @@
       owner: bew
       group: bew
       mode: 0644
+  - name: Insert newrelic.ini
+    template:
+      src: /srv/ansible/files/newrelic.ini.j2
+      dest: /home/bew/bew/newrelic.ini
+      owner: bew
+      group: bew
+      mode: 0644
   - name: Insert apache-vhost.conf
     template:
       src: /srv/ansible/files/apache-vhost.conf.j2
@@ -85,6 +92,11 @@
     lineinfile:
       path: /home/bew/.bash_profile
       line: "source $HOME/python/bin/activate"
+  - name: Enable Apache in SELinux
+    seboolean:
+      name: httpd_can_network_connect
+      state: yes
+      persistent: yes
 
   vars_files:
   - group_vars/vars
