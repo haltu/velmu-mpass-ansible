@@ -6,7 +6,7 @@
 - src: geerlingguy.memcached
 - src: geerlingguy.pip
 - src: geerlingguy.postgresql
-- src: geerlingguy.rabbitmq
 - src: geerlingguy.redis
 - src: geerlingguy.repo-epel
 - src: geerlingguy.supervisor
+- src: Stouts.rabbitmq

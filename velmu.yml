@@ -107,7 +107,7 @@
   - geerlingguy.pip
   - geerlingguy.git
   - geerlingguy.postgresql
-  - geerlingguy.rabbitmq
+  - Stouts.rabbitmq
   - geerlingguy.redis
   - geerlingguy.memcached
   - geerlingguy.supervisor

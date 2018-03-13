@@ -71,4 +71,19 @@ virtualenv_requirements:
 rabbitmq_user: "{{ vault_rabbitmq_user }}"
 rabbitmq_password: "{{ vault_rabbitmq_password }}"
 
+rabbitmq_enabled: yes
+rabbitmq_plugins:
+  - rabbitmq_management
+rabbitmq_users:
+  - user: "{{ rabbitmq_user }}"
+    password: "{{ rabbitmq_password }}"
+    vhost: dev
+    configure_priv: .*
+    read_priv: .*
+    write_priv: .*
+    tags:
+rabbitmq_vhosts: [dev]
+rabbitmq_users_remove:
+  - test
+
 newrelic_license_key: "{{ vault_newrelic_license_key }}"
