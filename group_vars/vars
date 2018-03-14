@@ -1,5 +1,7 @@
 ---
-bew_fqdn: demo.velmu.fi
+ansible_fqdn: demo.velmu.fi
+
+bew_fqdn: {{ ansible_fqdn }}
 bew_port: 8001
 
 postgresql_databases:
