@@ -13,7 +13,7 @@ DATABASES = {
   }
 }
 
-CELERY_BROKER_URL = 'amqp://{{ vault_rabbitmq_user }}:{{ vault_rabbitmq_password }}@localhost:5672/dev'
+CELERY_BROKER_URL = 'amqp://{{ rabbitmq_user }}:{{ rabbitmq_password }}@localhost:5672/{{ rabbitmq_vhost }}'
 
 LOGGING = {
     'version': 1,

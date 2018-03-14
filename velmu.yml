@@ -103,6 +103,7 @@
   - group_vars/vault
 
   roles:
+  - singleplatform-eng.users
   - geerlingguy.repo-epel
   - geerlingguy.pip
   - geerlingguy.git
