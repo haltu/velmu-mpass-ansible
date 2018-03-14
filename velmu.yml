@@ -80,7 +80,7 @@
   - name: Insert newrelic.ini
     template:
       src: /srv/ansible/files/newrelic.ini.j2
-      dest: /home/bew/bew/newrelic.ini
+      dest: /home/bew/newrelic.ini
       owner: bew
       group: bew
       mode: 0644
