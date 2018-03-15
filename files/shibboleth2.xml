@@ -1,0 +1,23 @@
+<?xml version="1.0"?>
+<SPConfig xmlns="urn:mace:shibboleth:2.0:native:sp:config" xmlns:conf="urn:mace:shibboleth:2.0:native:sp:config" xmlns:saml="urn:oasis:names:tc:SAML:2.0:assertion" xmlns:samlp="urn:oasis:names:tc:SAML:2.0:protocol" xmlns:md="urn:oasis:names:tc:SAML:2.0:metadata" clockSkew="180">
+  <ApplicationDefaults REMOTE_USER="user-identity eppn persistent-id targeted-id" entityID="https://demo.velmu.fi" signing="true" encryption="true">
+    <Sessions lifetime="28800" timeout="3600" checkAddress="false" relayState="ss:mem" handlerSSL="true">
+      <SSO entityID="not-configured">SAML2</SSO>
+      <Logout asynchronous="false">SAML2</Logout>
+      <Handler type="MetadataGenerator" Location="/Metadata" signing="false"/>
+      <Handler type="Status" Location="/Status" acl="127.0.0.1"/>
+      <Handler type="Session" Location="/Session" showAttributeValues="true"/>
+    </Sessions>
+    <Errors supportContact="tuki@haltu.fi" logoLocation="/shibboleth-sp/logo.jpg" styleSheet="/shibboleth-sp/main.css"/>
+    <!-- Metadata files -->
+    <MetadataProvider type="XML" path="/etc/shibboleth/metadata/mpass.xml" reloadInterval="7200"/>
+    <AttributeExtractor type="XML" validate="true" path="attribute-map.xml"/>
+    <AttributeResolver type="Query" subjectMatch="true"/>
+    <AttributeFilter type="XML" validate="true" path="attribute-policy.xml"/>
+    <CredentialResolver type="File" key="sp-key.pem" certificate="sp-cert.pem"/>
+  </ApplicationDefaults>
+  <!-- Policies that determine how to process and authenticate runtime messages. -->
+  <SecurityPolicyProvider type="XML" validate="true" path="security-policy.xml"/>
+  <!-- Low-level configuration about protocols and bindings available for use. -->
+  <ProtocolProvider type="XML" validate="true" reloadChanges="false" path="protocols.xml"/>
+</SPConfig>

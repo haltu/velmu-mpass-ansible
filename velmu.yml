@@ -115,6 +115,20 @@
     user:
       name: apache
       groups: bew
+  - name: Copy shibboleth2.xml
+    copy:
+      src: /srv/ansible/files/shibboleth2.xml
+      dest: /etc/shibboleth/shibboleth2.xml
+      owner: root
+      group: root
+      mode: 0644
+  - name: Copy MPASS-test metadata
+    copy:
+      src: /srv/ansible/files/mpass-test.xml
+      dest: /etc/shibboleth/metadata/mpass.xml
+      owner: root
+      group: root
+      mode: 0644
 
   vars_files:
   - group_vars/vars

@@ -92,8 +92,30 @@
     Require all granted
   </Directory>
 
+  <Location /login/saml/>
+    AuthType shibboleth
+    ShibRequestSetting entityID https://mpass-proxy-test.csc.fi/idp/shibboleth
+    ShibRequestSetting applicationId default
+    ShibRequestSetting requireSession On
+    ShibRequestSetting exportAssertion On
+    ShibUseEnvironment Off
+    ShibUseHeaders On
+    Require valid-user
+    ProxyPass http://127.0.0.1:{{ bew_port }}/login/saml/
+    ProxyPassReverse http://127.0.0.1:{{ bew_port }}/login/saml/
+  </Location>
+
+  <Location /shibboleth-sp>
+    Allow from all
+  </Location>
+
+  Alias /shibboleth-sp/main.css /usr/share/shibboleth/main.css
+  Alias /shibboleth-sp/logo.jpg /home/bew/bew/staticroot/images/logo.png
+
   ProxyPass /static/ !
   ProxyPass /media/ !
+  ProxyPass /shibboleth-sp/ !
+  ProxyPass /Shibboleth.sso/ !
 
   ProxyPass / http://127.0.0.1:{{ bew_port }}/
   ProxyPassReverse / http://127.0.0.1:{{ bew_port }}/
