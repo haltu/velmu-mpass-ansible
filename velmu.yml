@@ -33,6 +33,13 @@
       name: bew
       comment: "BEW Service"
       group: bew
+  - name: Set bew's home dir permissions
+    file:
+      path: /home/bew
+      state: directory
+      owner: bew
+      group: bew
+      mode: 0775
   - name: Create bew's .ssh
     file:
       path: /home/bew/.ssh
@@ -88,17 +95,26 @@
     lineinfile:
       path: /home/bew/.bash_profile
       line: "source $HOME/python/bin/activate"
-  - name: Enable Apache in SELinux
+
+  tasks:
+  - name: Insert Apache vhost config
+    template:
+      src: /srv/ansible/files/apache-vhost.conf.j2
+      dest: /etc/httpd/conf.d/001-vhost-bew.conf
+  - name: Enable httpd_can_network_connect
     seboolean:
       name: httpd_can_network_connect
       state: yes
       persistent: yes
-
-  tasks:
-  - name: Insert apache-vhost.conf
-    template:
-      src: /srv/ansible/files/apache-vhost.conf.j2
-      dest: /etc/httpd/conf.d/001-vhost-bew.conf
+  - name: Enable httpd_read_user_content
+    seboolean:
+      name: httpd_read_user_content
+      state: yes
+      persistent: yes
+  - name: Include user apache to group bew
+    user:
+      name: apache
+      groups: bew
 
   vars_files:
   - group_vars/vars
