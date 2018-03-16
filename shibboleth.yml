@@ -20,6 +20,10 @@
       owner: root
       group: root
       mode: 0755
+  - name: Check for LE certificate
+    stat:
+      path: /etc/letsencrypt/live/demo.velmu.fi/cert.pem
+    register: letsencrypt
 
   tasks:
   - name: Copy shibboleth2.xml

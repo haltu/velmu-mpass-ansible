@@ -87,3 +87,13 @@ rabbitmq_vhosts: ["{{ rabbitmq_vhost }}"]
 rabbitmq_users_remove:
 
 newrelic_license_key: "{{ vault_newrelic_license_key }}"
+
+certbot_create_if_missing: yes
+certbot_create_method: standalone
+certbot_admin_email: sysops@haltu.fi
+certbot_certs:
+  - domains:
+      - demo.velmu.fi
+certbot_create_command: "{{ certbot_script }} certonly --standalone --noninteractive --agree-tos --email {{ cert_item.email | default(certbot_admin_email) }} -d {{ cert_item.domains | join(',') }}"
+certbot_create_standalone_stop_services:
+  - httpd
