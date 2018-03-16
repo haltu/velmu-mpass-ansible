@@ -1,5 +1,4 @@
 - src: CSCfi.apache
-- src: CSCfi.shibboleth-sp
 - src: Stouts.rabbitmq
 - src: cchurch.virtualenv
 - src: geerlingguy.certbot

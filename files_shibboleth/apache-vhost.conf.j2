@@ -114,8 +114,8 @@
 
   ProxyPass /static/ !
   ProxyPass /media/ !
-  ProxyPass /shibboleth-sp/ !
-  ProxyPass /Shibboleth.sso/ !
+  ProxyPass /shibboleth-sp !
+  ProxyPass /Shibboleth.sso !
 
   ProxyPass / http://127.0.0.1:{{ bew_port }}/
   ProxyPassReverse / http://127.0.0.1:{{ bew_port }}/

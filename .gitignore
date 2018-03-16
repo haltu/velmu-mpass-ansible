@@ -1,5 +1,6 @@
 .vagrant/
 velmu.retry
 group_vars/vault
+files_shibboleth/*.pem
 *.swp
 *.sql
