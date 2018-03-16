@@ -1,0 +1,100 @@
+---
+- hosts: localhost
+  remote_user: root
+
+  pre_tasks:
+  - name: Copy Shibboleth repository data
+    copy:
+      src: /srv/ansible/files_shibboleth/shibboleth.repo
+      dest: /etc/yum.repos.d/shibboleth.repo
+      owner: root
+      group: root
+      mode: 0644
+  - name: Install Shibboleth package
+    yum:
+      name: shibboleth
+  - name: Create metadata directory
+    file:
+      path: /etc/shibboleth/metadata
+      state: directory
+      owner: root
+      group: root
+      mode: 0755
+  - name: Check for LE certificate
+    stat:
+      path: /etc/letsencrypt/live/demo.velmu.fi/cert.pem
+    register: letsencrypt
+
+  tasks:
+  - name: Copy shibboleth2.xml
+    copy:
+      src: /srv/ansible/files_shibboleth/shibboleth2.xml
+      dest: /etc/shibboleth/shibboleth2.xml
+      owner: root
+      group: root
+      mode: 0644
+  - name: Copy MPASS-test metadata
+    copy:
+      src: /srv/ansible/files_shibboleth/mpass-test.xml
+      dest: /etc/shibboleth/metadata/mpass.xml
+      owner: root
+      group: root
+      mode: 0644
+  - name: Copy attribute-map.xml
+    copy:
+      src: /srv/ansible/files_shibboleth/attribute-map.xml
+      dest: /etc/shibboleth/attribute-map.xml
+      owner: root
+      group: root
+      mode: 0644
+  - name: Copy sp-cert.pem
+    copy:
+      src: /srv/ansible/files_shibboleth/sp-cert.pem
+      dest: /etc/shibboleth/sp-cert.pem
+      owner: root
+      group: root
+      mode: 0644
+  - name: Copy sp-key.pem
+    copy:
+      src: /srv/ansible/files_shibboleth/sp-key.pem
+      dest: /etc/shibboleth/sp-key.pem
+      owner: root
+      group: root
+      mode: 0644
+  - name: Copy Apache ssl.conf
+    copy:
+      src: /srv/ansible/files_shibboleth/ssl.conf
+      dest: /etc/httpd/conf.d/ssl.conf
+      owner: root
+      group: root
+      mode: 0644
+  - name: Copy Apache shib.conf
+    copy:
+      src: /srv/ansible/files_shibboleth/shib.conf
+      dest: /etc/httpd/conf.d/shib.conf
+      owner: root
+      group: root
+      mode: 0644
+  - name: Insert Apache vhost config
+    template:
+      src: /srv/ansible/files_shibboleth/apache-vhost.conf.j2
+      dest: /etc/httpd/conf.d/001-vhost-bew.conf
+      owner: root
+      group: root
+      mode: 0644
+
+  post_tasks:
+  - name: Restart Shibboleth
+    service:
+      name: shibd
+      state: restarted
+      enabled: yes
+  - name: Restart Apache
+    service:
+      name: httpd
+      state: restarted
+      enabled: yes
+
+  vars_files:
+  - group_vars/vars
+  - group_vars/vault

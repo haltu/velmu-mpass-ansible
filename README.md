@@ -7,8 +7,9 @@ Before starting:
 Server deployment:
 1. Configure credentials in `/srv/ansible/group_vars/vault`
 2. Run `/srv/ansible/ansible.sh` inside the VM as root
-3. Switch to user bew
-4. Clone https://code.haltu.net/s-velmu/trial-velmu-app to `/home/bew/bew`
-5. Switch to develop branch
-6. Run `buildout`
-7. Restart Supervisor processes
+3. Run `ansible-playbook shibboleth.yml` for Apache & Shibboleth setup.
+4. Switch to user bew
+5. Clone https://code.haltu.net/s-velmu/trial-velmu-app to `/home/bew/bew`
+6. Switch to develop branch
+7. Run `buildout`
+8. Restart Supervisor processes

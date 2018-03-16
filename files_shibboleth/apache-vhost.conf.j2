@@ -50,11 +50,17 @@
   RequestHeader set X-Forwarded-Protocol https env=HTTPS
 
   SSLEngine on
+
+{% if letsencrypt.stat.exists == True %}
+  SSLCertificateKeyFile /etc/letsencrypt/live/demo.velmu.fi/privkey.pem
+  SSLCertificateFile /etc/letsencrypt/live/demo.velmu.fi/cert.pem
+  SSLCertificateChainFile /etc/letsencrypt/live/demo.velmu.fi/fullchain.pem
+{% endif %}
+
+{% if letsencrypt.stat.exists == False %}
   SSLCertificateKeyFile /etc/pki/tls/private/localhost.key
   SSLCertificateFile /etc/pki/tls/certs/localhost.crt
-#  SSLCertificateChainFile /etc/pki/tls/certs/server-chain.crt
-
-#  SSLOpenSSLConfCmd DHParameters "/etc/ssl/certs/dhparam.pem"
+{% endif %}
 
   ProxyPass /robots.txt !
   Redirect 404 /robots.txt
@@ -114,8 +120,8 @@
 
   ProxyPass /static/ !
   ProxyPass /media/ !
-  ProxyPass /shibboleth-sp/ !
-  ProxyPass /Shibboleth.sso/ !
+  ProxyPass /shibboleth-sp !
+  ProxyPass /Shibboleth.sso !
 
   ProxyPass / http://127.0.0.1:{{ bew_port }}/
   ProxyPassReverse / http://127.0.0.1:{{ bew_port }}/
