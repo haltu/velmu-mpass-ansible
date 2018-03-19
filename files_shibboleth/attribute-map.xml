@@ -1,36 +1,57 @@
 <?xml version="1.0"?>
 <Attributes xmlns="urn:mace:shibboleth:2.0:attribute-map" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
-  <Attribute name="urn:oid:1.3.6.1.4.1.5923.1.1.1.6" id="user-identity">
+  <Attribute name="urn:educloudalliance.org:OID" id="MPASS-ecaoid">
     <AttributeDecoder xsi:type="StringAttributeDecoder" caseSensitive="false"/>
   </Attribute>
-  <Attribute name="urn:educloudalliance.org:authenticator" id="authenticator">
+  <Attribute name="urn:mpass.id:role" id="MPASS-role">
     <AttributeDecoder xsi:type="StringAttributeDecoder" caseSensitive="false"/>
   </Attribute>
-  <Attribute name="urn:educloudalliance.org:authn" id="authnID">
+  <Attribute name="urn:oid:2.5.4.4" id="MPASS-sn">
     <AttributeDecoder xsi:type="StringAttributeDecoder" caseSensitive="false"/>
   </Attribute>
-  <Attribute name="urn:oid:2.5.4.4" id="MPASS-surname">
+  <Attribute name="urn:mpass.id:schoolCode" id="MPASS-schoolcode">
     <AttributeDecoder xsi:type="StringAttributeDecoder" caseSensitive="false"/>
   </Attribute>
-  <Attribute name="urn:oid:2.5.4.42" id="MPASS-givenName">
+  <Attribute name="urn:educloudalliance.org:legacyCryptId" id="MPASS-ecalegacycryptid">
     <AttributeDecoder xsi:type="StringAttributeDecoder" caseSensitive="false"/>
   </Attribute>
-  <Attribute name="urn:educloudalliance.org:OID" id="MPASS-OID">
+  <Attribute name="urn:mpass.id:class" id="MPASS-class">
     <AttributeDecoder xsi:type="StringAttributeDecoder" caseSensitive="false"/>
   </Attribute>
-  <Attribute name="urn:educloudalliance.org:role" id="MPASS-role">
+  <Attribute name="urn:educloudalliance.org:school" id="MPASS-ecaschool">
     <AttributeDecoder xsi:type="StringAttributeDecoder" caseSensitive="false"/>
   </Attribute>
-  <Attribute name="urn:educloudalliance.org:structuredRole" id="MPASS-structuredrole">
+  <Attribute name="urn:mpass.id:legacyCryptId" id="MPASS-legacycryptid">
     <AttributeDecoder xsi:type="StringAttributeDecoder" caseSensitive="false"/>
   </Attribute>
-  <Attribute name="urn:educloudalliance.org:group" id="MPASS-group">
+  <Attribute name="urn:mpass.id:legacyCryptIde" id="MPASS-legacycryptide">
     <AttributeDecoder xsi:type="StringAttributeDecoder" caseSensitive="false"/>
   </Attribute>
-  <Attribute name="urn:educloudalliance.org:municipality" id="MPASS-municipality">
+  <Attribute name="urn:educloudalliance.org:municipality" id="MPASS-ecamunicipality">
     <AttributeDecoder xsi:type="StringAttributeDecoder" caseSensitive="false"/>
   </Attribute>
-  <Attribute name="urn:educloudalliance.org:school" id="MPASS-school">
+  <Attribute name="urn:educloudalliance.org:group" id="MPASS-ecagroup">
+    <AttributeDecoder xsi:type="StringAttributeDecoder" caseSensitive="false"/>
+  </Attribute>
+  <Attribute name="urn:mpass.id:municipalityCode" id="MPASS-municipalitycode">
+    <AttributeDecoder xsi:type="StringAttributeDecoder" caseSensitive="false"/>
+  </Attribute>
+  <Attribute name="urn:educloudalliance.org:role" id="MPASS-ecarole">
+    <AttributeDecoder xsi:type="StringAttributeDecoder" caseSensitive="false"/>
+  </Attribute>
+  <Attribute name="urn:mpass.id:school" id="MPASS-school">
+    <AttributeDecoder xsi:type="StringAttributeDecoder" caseSensitive="false"/>
+  </Attribute>
+  <Attribute name="urn:mpass.id:uid" id="MPASS-uid">
+    <AttributeDecoder xsi:type="StringAttributeDecoder" caseSensitive="false"/>
+  </Attribute>
+  <Attribute name="urn:educloudalliance.org:structuredRole" id="MPASS-ecastructuredrole">
+    <AttributeDecoder xsi:type="StringAttributeDecoder" caseSensitive="false"/>
+  </Attribute>
+  <Attribute name="urn:oid:2.5.4.42" id="MPASS-givenname">
+    <AttributeDecoder xsi:type="StringAttributeDecoder" caseSensitive="false"/>
+  </Attribute>
+  <Attribute name="urn:mpass.id:municipality" id="MPASS-municipality">
     <AttributeDecoder xsi:type="StringAttributeDecoder" caseSensitive="false"/>
   </Attribute>
 </Attributes>
