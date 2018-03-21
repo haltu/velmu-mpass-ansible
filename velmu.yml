@@ -39,7 +39,7 @@
       state: directory
       owner: bew
       group: bew
-      mode: 0775
+      mode: 0711
   - name: Create bew's .ssh
     file:
       path: /home/bew/.ssh
