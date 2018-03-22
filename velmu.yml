@@ -94,7 +94,7 @@
   - name: Activate bew's virtualenv
     lineinfile:
       path: /home/bew/.bash_profile
-      line: "source $HOME/python/bin/activate"
+      line: "source $HOME/venv/bin/activate"
 
   tasks:
   - name: Enable httpd_can_network_connect
