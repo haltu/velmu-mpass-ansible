@@ -86,6 +86,8 @@ rabbitmq_users:
 rabbitmq_vhosts: ["{{ rabbitmq_vhost }}"]
 rabbitmq_users_remove:
 
+sentry_dsn: "{{ vault_sentry_dsn }}"
+
 newrelic_license_key: "{{ vault_newrelic_license_key }}"
 
 certbot_create_if_missing: yes
