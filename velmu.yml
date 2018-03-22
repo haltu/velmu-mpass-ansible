@@ -111,6 +111,24 @@
     user:
       name: apache
       groups: bew
+  - name: Include user root to group bew
+    user:
+      name: root
+      groups: bew
+
+  post_tasks:
+  - name: Overwrite Supervisor config
+    copy:
+      src: /srv/ansible/files/supervisord.conf
+      dest: /etc/supervisor/supervisord.conf
+      owner: root
+      group: root
+      mode: 0644
+  - name: Restart Supervisor
+    service:
+      name: supervisord
+      state: restarted
+      enabled: yes
 
   vars_files:
   - group_vars/vars
