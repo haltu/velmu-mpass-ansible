@@ -107,8 +107,19 @@
     ShibUseEnvironment Off
     ShibUseHeaders On
     Require valid-user
-    ProxyPass http://127.0.0.1:{{ bew_port }}/login/saml/
-    ProxyPassReverse http://127.0.0.1:{{ bew_port }}/login/saml/
+    ProxyPass http://127.0.0.1:{{ bew_port }}/login/mpass/
+    ProxyPassReverse http://127.0.0.1:{{ bew_port }}/login/mpass/
+  </Location>
+
+  <Location /Shibboleth.sso>
+    AuthType shibboleth
+    ShibRequestSetting entityID https://mpass-proxy-test.csc.fi/idp/shibboleth
+    ShibRequestSetting applicationId default
+    ShibRequestSetting requireSession On
+    ShibRequestSetting exportAssertion On
+    ShibUseEnvironment Off
+    ShibUseHeaders On
+    Require valid-user
   </Location>
 
   <Location /shibboleth-sp>
