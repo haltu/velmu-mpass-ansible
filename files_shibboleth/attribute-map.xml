@@ -1,0 +1,42 @@
+<?xml version="1.0"?>
+<Attributes xmlns="urn:mace:shibboleth:2.0:attribute-map" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <Attribute name="urn:oid:2.5.4.4" id="MPASS-sn">
+    <AttributeDecoder xsi:type="StringAttributeDecoder" caseSensitive="false"/>
+  </Attribute>
+  <Attribute name="urn:oid:2.5.4.42" id="MPASS-givenname">
+    <AttributeDecoder xsi:type="StringAttributeDecoder" caseSensitive="false"/>
+  </Attribute>
+  <Attribute name="http://eidas.europa.eu/attributes/naturalperson/CurrentGivenName" id="MPASS-currentgivenname">
+    <AttributeDecoder xsi:type="StringAttributeDecoder" caseSensitive="false"/>
+  </Attribute>
+  <Attribute name="urn:mpass.id:uid" id="MPASS-uid">
+    <AttributeDecoder xsi:type="StringAttributeDecoder" caseSensitive="false"/>
+  </Attribute>
+  <Attribute name="urn:mpass.id:legacyCryptId" id="MPASS-legacycryptid">
+    <AttributeDecoder xsi:type="StringAttributeDecoder" caseSensitive="false"/>
+  </Attribute>
+  <Attribute name="urn:mpass.id:legacyCryptIde" id="MPASS-legacycryptide">
+    <AttributeDecoder xsi:type="StringAttributeDecoder" caseSensitive="false"/>
+  </Attribute>
+  <Attribute name="urn:mpass.id:municipalityCode" id="MPASS-municipalitycode">
+    <AttributeDecoder xsi:type="StringAttributeDecoder" caseSensitive="false"/>
+  </Attribute>
+  <Attribute name="urn:mpass.id:municipality" id="MPASS-municipality">
+    <AttributeDecoder xsi:type="StringAttributeDecoder" caseSensitive="false"/>
+  </Attribute>
+  <Attribute name="urn:mpass.id:schoolCode" id="MPASS-schoolcode">
+    <AttributeDecoder xsi:type="StringAttributeDecoder" caseSensitive="false"/>
+  </Attribute>
+  <Attribute name="urn:mpass.id:school" id="MPASS-school">
+    <AttributeDecoder xsi:type="StringAttributeDecoder" caseSensitive="false"/>
+  </Attribute>
+  <Attribute name="urn:mpass.id:class" id="MPASS-class">
+    <AttributeDecoder xsi:type="StringAttributeDecoder" caseSensitive="false"/>
+  </Attribute>
+  <Attribute name="urn:mpass.id:classLevel" id="MPASS-classlevel">
+    <AttributeDecoder xsi:type="StringAttributeDecoder" caseSensitive="false"/>
+  </Attribute>
+  <Attribute name="urn:mpass.id:role" id="MPASS-role">
+    <AttributeDecoder xsi:type="StringAttributeDecoder" caseSensitive="false"/>
+  </Attribute>
+</Attributes>

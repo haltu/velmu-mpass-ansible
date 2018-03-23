@@ -33,6 +33,13 @@
       name: bew
       comment: "BEW Service"
       group: bew
+  - name: Set bew's home dir permissions
+    file:
+      path: /home/bew
+      state: directory
+      owner: bew
+      group: bew
+      mode: 0711
   - name: Create bew's .ssh
     file:
       path: /home/bew/.ssh
@@ -80,29 +87,55 @@
   - name: Insert newrelic.ini
     template:
       src: /srv/ansible/files/newrelic.ini.j2
-      dest: /home/bew/bew/newrelic.ini
+      dest: /home/bew/newrelic.ini
       owner: bew
       group: bew
       mode: 0644
-  - name: Insert apache-vhost.conf
-    template:
-      src: /srv/ansible/files/apache-vhost.conf.j2
-      dest: /etc/httpd/conf.d/001-vhost-bew.conf
   - name: Activate bew's virtualenv
     lineinfile:
       path: /home/bew/.bash_profile
-      line: "source $HOME/python/bin/activate"
-  - name: Enable Apache in SELinux
+      line: "source $HOME/venv/bin/activate"
+
+  tasks:
+  - name: Enable httpd_can_network_connect
     seboolean:
       name: httpd_can_network_connect
       state: yes
       persistent: yes
+  - name: Enable httpd_read_user_content
+    seboolean:
+      name: httpd_read_user_content
+      state: yes
+      persistent: yes
+  - name: Include user apache to group bew
+    user:
+      name: apache
+      groups: bew
+  - name: Include user root to group bew
+    user:
+      name: root
+      groups: bew
+
+  post_tasks:
+  - name: Overwrite Supervisor config
+    copy:
+      src: /srv/ansible/files/supervisord.conf
+      dest: /etc/supervisor/supervisord.conf
+      owner: root
+      group: root
+      mode: 0644
+  - name: Restart Supervisor
+    service:
+      name: supervisord
+      state: restarted
+      enabled: yes
 
   vars_files:
   - group_vars/vars
   - group_vars/vault
 
   roles:
+  - singleplatform-eng.users
   - geerlingguy.repo-epel
   - geerlingguy.pip
   - geerlingguy.git
@@ -113,5 +146,4 @@
   - geerlingguy.supervisor
   - geerlingguy.certbot
   - CSCfi.apache
-  - CSCfi.shibboleth-sp
   - cchurch.virtualenv

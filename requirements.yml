@@ -1,6 +1,6 @@
-- src: cchurch.virtualenv
 - src: CSCfi.apache
-- src: CSCfi.shibboleth-sp
+- src: Stouts.rabbitmq
+- src: cchurch.virtualenv
 - src: geerlingguy.certbot
 - src: geerlingguy.git
 - src: geerlingguy.memcached
@@ -9,4 +9,4 @@
 - src: geerlingguy.redis
 - src: geerlingguy.repo-epel
 - src: geerlingguy.supervisor
-- src: Stouts.rabbitmq
+- src: singleplatform-eng.users

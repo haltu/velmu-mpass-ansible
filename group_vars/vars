@@ -64,12 +64,13 @@ supervisor_programs:
       user=bew
 
 virtualenv_user: bew
-virtualenv_path: /home/bew/python
+virtualenv_path: /home/bew/venv
 virtualenv_requirements:
   - /srv/ansible/files/requirements.txt
 
 rabbitmq_user: "{{ vault_rabbitmq_user }}"
 rabbitmq_password: "{{ vault_rabbitmq_password }}"
+rabbitmq_vhost: "dev"
 
 rabbitmq_enabled: yes
 rabbitmq_plugins:
@@ -77,13 +78,24 @@ rabbitmq_plugins:
 rabbitmq_users:
   - user: "{{ rabbitmq_user }}"
     password: "{{ rabbitmq_password }}"
-    vhost: dev
+    vhost: "{{ rabbitmq_vhost }}"
     configure_priv: .*
     read_priv: .*
     write_priv: .*
     tags:
-rabbitmq_vhosts: [dev]
+rabbitmq_vhosts: ["{{ rabbitmq_vhost }}"]
 rabbitmq_users_remove:
-  - test
+
+sentry_dsn: "{{ vault_sentry_dsn }}"
 
 newrelic_license_key: "{{ vault_newrelic_license_key }}"
+
+certbot_create_if_missing: yes
+certbot_create_method: standalone
+certbot_admin_email: sysops@haltu.fi
+certbot_certs:
+  - domains:
+      - demo.velmu.fi
+certbot_create_command: "{{ certbot_script }} certonly --standalone --noninteractive --agree-tos --email {{ cert_item.email | default(certbot_admin_email) }} -d {{ cert_item.domains | join(',') }}"
+certbot_create_standalone_stop_services:
+  - httpd
