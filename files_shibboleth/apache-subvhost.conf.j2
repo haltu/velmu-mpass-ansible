@@ -1,0 +1,142 @@
+
+<VirtualHost *:80>
+  ServerName {{ item }}.demo.velmu.fi
+  UseCanonicalName On
+  ServerAdmin tuki@haltu.fi
+
+  DocumentRoot /var/www
+
+  ProxyPass /robots.txt !
+  Redirect 404 /robots.txt
+  <Location /robots.txt>
+    ErrorDocument 404 "robots.txt does not exist"
+  </Location>
+
+  # For letsencrypt
+  Alias "/.well-known/acme-challenge" "/var/www/.well-known/acme-challenge"
+  <Directory "/var/www/.well-known/acme-challenge">
+    Require all granted
+    <IfModule mod_headers.c>
+      Header set Content-Type "application/jose+json"
+    </IfModule>
+  </Directory>
+
+  ProxyPass /server-status !
+  <Location /server-status>
+    SetHandler server-status
+    Order deny,allow
+    Deny from all
+    Allow from 127.0.0.1
+  </Location>
+
+  # Icons
+  AliasMatch ^/((apple-touch-icon|browserconfig|favicon|mstile).*\.(png|xml|ico))$ /home/bew/bew/staticroot/$1
+  ProxyPassMatch /(apple-touch-icon|browserconfig|favicon|mstile).*\.(png|xml|ico)$ !
+
+  RewriteEngine On
+  RewriteCond %{HTTPS} !=on
+  RewriteCond %{REQUEST_URI} !^/\.well\-known/acme\-challenge/
+  RewriteRule ^/?(.*) https://%{SERVER_NAME}/$1 [R,L]
+</VirtualHost>
+
+<VirtualHost *:443>
+  ServerName {{ item }}.demo.velmu.fi
+  UseCanonicalName On
+  ServerAdmin tuki@haltu.fi
+
+  DocumentRoot /var/www
+
+  RequestHeader unset X-Forwarded-Protocol
+  RequestHeader set X-Forwarded-Protocol https env=HTTPS
+
+  SSLEngine on
+
+  SSLCertificateKeyFile /etc/letsencrypt/live/{{ item }}.demo.velmu.fi/privkey.pem
+  SSLCertificateFile /etc/letsencrypt/live/{{ item }}.demo.velmu.fi/cert.pem
+  SSLCertificateChainFile /etc/letsencrypt/live/{{ item }}.demo.velmu.fi/fullchain.pem
+
+  ProxyPass /robots.txt !
+  Redirect 404 /robots.txt
+  <Location /robots.txt>
+    ErrorDocument 404 "robots.txt does not exist"
+  </Location>
+
+  ProxyPass /server-status !
+  <Location /server-status>
+    SetHandler server-status
+    Order deny,allow
+    Deny from all
+    Allow from all
+  </Location>
+
+  # Icons
+  AliasMatch ^/((apple-touch-icon|browserconfig|favicon|mstile).*\.(png|xml|ico))$ /home/bew/bew/staticroot/$1
+  ProxyPassMatch /(apple-touch-icon|browserconfig|favicon|mstile).*\.(png|xml|ico)$ !
+
+  Alias /media/ "/home/bew/bew/mediaroot/"
+  <Directory "/home/bew/bew/mediaroot/">
+    Options FollowSymLinks
+    AllowOverride None
+    Require all granted
+  </Directory>
+
+  Alias /static/ "/home/bew/bew/staticroot/"
+  <Directory "/home/bew/bew/staticroot/">
+    Header set Access-Control-Allow-Origin "*"
+    ExpiresActive On
+    ExpiresDefault "access plus 1 year"
+    AddOutputFilterByType DEFLATE text/html text/plain text/xml text/css text/javascript application/javascript
+    Options FollowSymLinks
+    AllowOverride None
+    Require all granted
+  </Directory>
+
+  <Location /login/saml/>
+    AuthType shibboleth
+    ShibRequestSetting entityID https://mpass-proxy-test.csc.fi/idp/shibboleth
+    ShibRequestSetting applicationId {{ item }}
+    ShibRequestSetting requireSession On
+    ShibRequestSetting exportAssertion On
+    ShibUseEnvironment Off
+    ShibUseHeaders On
+    Require valid-user
+    ProxyPass http://127.0.0.1:{{ bew_port }}/login/mpass/
+    ProxyPassReverse http://127.0.0.1:{{ bew_port }}/login/mpass/
+  </Location>
+
+  <Location /Shibboleth.sso>
+    AuthType shibboleth
+    ShibRequestSetting entityID https://mpass-proxy-test.csc.fi/idp/shibboleth
+    ShibRequestSetting applicationId {{ item }}
+    ShibRequestSetting requireSession On
+    ShibRequestSetting exportAssertion On
+    ShibUseEnvironment Off
+    ShibUseHeaders On
+    Require valid-user
+  </Location>
+
+  <Location /shibboleth-sp>
+    Allow from all
+  </Location>
+
+  Alias /shibboleth-sp/main.css /usr/share/shibboleth/main.css
+  Alias /shibboleth-sp/logo.jpg /home/bew/bew/staticroot/images/logo.png
+
+  ProxyPass /static/ !
+  ProxyPass /media/ !
+  ProxyPass /shibboleth-sp !
+  ProxyPass /Shibboleth.sso !
+
+  ProxyPass / http://127.0.0.1:{{ bew_port }}/
+  ProxyPassReverse / http://127.0.0.1:{{ bew_port }}/
+
+  ErrorLog /var/log/httpd/error.log
+
+  # Possible values include: debug, info, notice, warn, error, crit, alert, emerg.
+  LogLevel warn
+
+  CustomLog /var/log/httpd/logstash.log combined
+
+</VirtualHost>
+
+# vim: ft=apache

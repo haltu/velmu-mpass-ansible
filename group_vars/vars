@@ -51,7 +51,7 @@ supervisor_programs:
       stopwaitsecs=600
       user=bew
   - name: 'bew_gunicorn'
-    command: /home/bew/bew/bin/newrelic-admin run-program /home/bew/bew/bin/gunicorn --bind 0.0.0.0:8001 -w 2 --max-requests 1000 -t 120 --env DJANGO_SETTINGS_MODULE=local_settings project.wsgi:application
+    command: /home/bew/bew/bin/newrelic-admin run-program /home/bew/bew/bin/gunicorn --reload --bind 0.0.0.0:8001 -w 2 --max-requests 1000 -t 120 --env DJANGO_SETTINGS_MODULE=local_settings project.wsgi:application
     state: present
     configuration: |
       environment=LANG="en_US.utf8", LC_ALL="en_US.UTF-8", LC_LANG="en_US.UTF-8", HTTPS="on", DJANGO_SETTINGS_MODULE="local_settings", NEW_RELIC_CONFIG_FILE="newrelic.ini"
@@ -96,6 +96,11 @@ certbot_admin_email: sysops@haltu.fi
 certbot_certs:
   - domains:
       - demo.velmu.fi
+      - one.demo.velmu.fi
+      - two.demo.velmu.fi
+      - three.demo.velmu.fi
+      - four.demo.velmu.fi
+      - five.demo.velmu.fi
 certbot_create_command: "{{ certbot_script }} certonly --standalone --noninteractive --agree-tos --email {{ cert_item.email | default(certbot_admin_email) }} -d {{ cert_item.domains | join(',') }}"
 certbot_create_standalone_stop_services:
   - httpd

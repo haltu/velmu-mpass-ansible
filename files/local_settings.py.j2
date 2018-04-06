@@ -1,6 +1,6 @@
 from project.production import *
 
-ALLOWED_HOSTS = ['127.0.0.1', 'localhost']
+ALLOWED_HOSTS = ['127.0.0.1', 'localhost', 'demo.velmu.fi', 'one.demo.velmu.fi', 'two.demo.velmu.fi', 'three.demo.velmu.fi', 'four.demo.velmu.fi', 'five.demo.velmu.fi']
 DEBUG=False
 
 SECRET_KEY = '{{ vault_secret_key }}'
@@ -22,30 +22,81 @@ SENTRY_DSN = '{{ sentry_dsn }}'
 SENTRY_SITE = '{{ bew_fqdn }}'
 
 LOGGING = {
-    'version': 1,
-    'disable_existing_loggers': False,
-    'loggers': {
-      '': {
-        'level': 'DEBUG',
-        'handlers': ['console'],
-        'filters': ['default'],
+  'version': 1,
+  'disable_existing_loggers': False,
+  'root': {
+    'level': 'INFO',
+    'handlers': ['console', 'file_logger', 'sentry'],
+  },
+  'formatters': {
+    'verbose': {
+      'format': '%(levelname)s %(asctime)s %(module)s %(process)d %(thread)d %(message)s %(data)s'
+    },
+    'normal': {
+      'format': '%(asctime)s %(levelname)s %(name)s %(thread)d %(lineno)s %(message)s %(data)s'
+    },
+  },
+  'filters': {
+    'default': {
+      '()': 'project.logging_helpers.Filter',
+    },
+  },
+  'handlers': {
+    'sentry': {
+      'level': 'WARNING',
+      'class': 'raven.contrib.django.raven_compat.handlers.SentryHandler',
       },
+    'console': {
+      'level': 'DEBUG',
+      'class': 'logging.StreamHandler',
+      'formatter': 'verbose',
+      'filters': ['default'],
     },
-    'formatters': {
-        'verbose': {
-            'format': '%(levelname)s %(asctime)s %(module)s %(process)d %(thread)d %(message)s %(data)s'
-        },
+    'file_logger': {
+      'level': 'DEBUG',
+      'class': 'logging.handlers.RotatingFileHandler',
+      'filename': '/home/bew/django_debug.log',
+      'maxBytes': 1024 * 1024 * 5,
+      'backupCount': 10,
+      'formatter': 'normal',
+      'filters': ['default'],
     },
-    'filters': {
-      'default': {
-        '()': 'project.logging_helpers.Filter',
-      },
+  },
+  'loggers': {
+    'sentry.errors': {
+      'level': 'WARNING',
+      'handlers': ['console', 'file_logger'],
+      'propagate': False,
     },
-    'handlers': {
-        'console': {
-            'class': 'logging.StreamHandler',
-            'formatter': 'verbose',
-            'filters': ['default'],
-        }
+    'raven': {
+      'level': 'WARNING',
+      'handlers': ['console', 'file_logger'],
+      'propagate': False,
     },
+    'newrelic': {
+      'level': 'WARNING',
+      'handlers': ['console', 'file_logger'],
+      'propagate': False,
+    },
+    'celery': {
+      'level': 'INFO',
+      'handlers': ['console', 'file_logger', 'sentry'],
+      'propagate': False,
+    },
+    'celery.tasks': {
+      'level': 'INFO',
+      'handlers': ['console', 'file_logger', 'sentry'],
+      'propagate': False,
+    },
+    'django': {
+      'level': 'WARNING',
+      'handlers': ['console', 'file_logger', 'sentry'],
+      'propagate': True,
+    },
+    '': {
+      'level': 'INFO',
+      'handlers': ['console', 'file_logger', 'sentry'],
+      'propagate': False,
+    },
+  },
 }
