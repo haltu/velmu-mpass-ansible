@@ -19,6 +19,9 @@ DATABASES = {
 SENTRY_DSN = '{{ sentry_dsn }}'
 SENTRY_SITE = '{{ item }}.demo.velmu.fi'
 
+SESSION_COOKIE_NAME = '{{ item }}appsid'
+DEMOSP_TEMPLATE_NAME = 'demosp/{{ item }}.html'
+
 LOGGING = {
   'version': 1,
   'disable_existing_loggers': False,
