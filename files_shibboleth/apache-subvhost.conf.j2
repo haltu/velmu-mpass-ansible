@@ -30,7 +30,7 @@
   </Location>
 
   # Icons
-  AliasMatch ^/((apple-touch-icon|browserconfig|favicon|mstile).*\.(png|xml|ico))$ /home/bew/bew/staticroot/$1
+  AliasMatch ^/((apple-touch-icon|browserconfig|favicon|mstile).*\.(png|xml|ico))$ /home/demosp/demosp/staticroot/$1
   ProxyPassMatch /(apple-touch-icon|browserconfig|favicon|mstile).*\.(png|xml|ico)$ !
 
   RewriteEngine On
@@ -70,18 +70,18 @@
   </Location>
 
   # Icons
-  AliasMatch ^/((apple-touch-icon|browserconfig|favicon|mstile).*\.(png|xml|ico))$ /home/bew/bew/staticroot/$1
+  AliasMatch ^/((apple-touch-icon|browserconfig|favicon|mstile).*\.(png|xml|ico))$ /home/demosp/demosp/staticroot/$1
   ProxyPassMatch /(apple-touch-icon|browserconfig|favicon|mstile).*\.(png|xml|ico)$ !
 
-  Alias /media/ "/home/bew/bew/mediaroot/"
-  <Directory "/home/bew/bew/mediaroot/">
+  Alias /media/ "/home/demosp/demosp/mediaroot/"
+  <Directory "/home/demosp/demosp/mediaroot/">
     Options FollowSymLinks
     AllowOverride None
     Require all granted
   </Directory>
 
-  Alias /static/ "/home/bew/bew/staticroot/"
-  <Directory "/home/bew/bew/staticroot/">
+  Alias /static/ "/home/demosp/demosp/staticroot/"
+  <Directory "/home/demosp/demosp/staticroot/">
     Header set Access-Control-Allow-Origin "*"
     ExpiresActive On
     ExpiresDefault "access plus 1 year"
@@ -100,8 +100,8 @@
     ShibUseEnvironment Off
     ShibUseHeaders On
     Require valid-user
-    ProxyPass http://127.0.0.1:{{ item.port }}/login/mpass/
-    ProxyPassReverse http://127.0.0.1:{{ item.port }}/login/mpass/
+    ProxyPass http://127.0.0.1:{{ item.port }}/login/saml/
+    ProxyPassReverse http://127.0.0.1:{{ item.port }}/login/saml/
   </Location>
 
   <Location /Shibboleth.sso>
@@ -120,7 +120,7 @@
   </Location>
 
   Alias /shibboleth-sp/main.css /usr/share/shibboleth/main.css
-  Alias /shibboleth-sp/logo.jpg /home/bew/bew/staticroot/images/logo.png
+  Alias /shibboleth-sp/logo.jpg /home/demosp/demosp/staticroot/images/logo.png
 
   ProxyPass /static/ !
   ProxyPass /media/ !
