@@ -1,6 +1,6 @@
 
 <VirtualHost *:80>
-  ServerName {{ item }}.demo.velmu.fi
+  ServerName {{ item.name }}.demo.velmu.fi
   UseCanonicalName On
   ServerAdmin tuki@haltu.fi
 
@@ -40,7 +40,7 @@
 </VirtualHost>
 
 <VirtualHost *:443>
-  ServerName {{ item }}.demo.velmu.fi
+  ServerName {{ item.name }}.demo.velmu.fi
   UseCanonicalName On
   ServerAdmin tuki@haltu.fi
 
@@ -51,9 +51,9 @@
 
   SSLEngine on
 
-  SSLCertificateKeyFile /etc/letsencrypt/live/{{ item }}.demo.velmu.fi/privkey.pem
-  SSLCertificateFile /etc/letsencrypt/live/{{ item }}.demo.velmu.fi/cert.pem
-  SSLCertificateChainFile /etc/letsencrypt/live/{{ item }}.demo.velmu.fi/fullchain.pem
+  SSLCertificateKeyFile /etc/letsencrypt/live/{{ item.name }}.demo.velmu.fi/privkey.pem
+  SSLCertificateFile /etc/letsencrypt/live/{{ item.name }}.demo.velmu.fi/cert.pem
+  SSLCertificateChainFile /etc/letsencrypt/live/{{ item.name }}.demo.velmu.fi/fullchain.pem
 
   ProxyPass /robots.txt !
   Redirect 404 /robots.txt
@@ -94,20 +94,20 @@
   <Location /login/saml/>
     AuthType shibboleth
     ShibRequestSetting entityID https://mpass-proxy-test.csc.fi/idp/shibboleth
-    ShibRequestSetting applicationId {{ item }}
+    ShibRequestSetting applicationId {{ item.name }}
     ShibRequestSetting requireSession On
     ShibRequestSetting exportAssertion On
     ShibUseEnvironment Off
     ShibUseHeaders On
     Require valid-user
-    ProxyPass http://127.0.0.1:{{ bew_port }}/login/mpass/
-    ProxyPassReverse http://127.0.0.1:{{ bew_port }}/login/mpass/
+    ProxyPass http://127.0.0.1:{{ item.port }}/login/mpass/
+    ProxyPassReverse http://127.0.0.1:{{ item.port }}/login/mpass/
   </Location>
 
   <Location /Shibboleth.sso>
     AuthType shibboleth
     ShibRequestSetting entityID https://mpass-proxy-test.csc.fi/idp/shibboleth
-    ShibRequestSetting applicationId {{ item }}
+    ShibRequestSetting applicationId {{ item.name }}
     ShibRequestSetting requireSession On
     ShibRequestSetting exportAssertion On
     ShibUseEnvironment Off
@@ -127,8 +127,8 @@
   ProxyPass /shibboleth-sp !
   ProxyPass /Shibboleth.sso !
 
-  ProxyPass / http://127.0.0.1:{{ bew_port }}/
-  ProxyPassReverse / http://127.0.0.1:{{ bew_port }}/
+  ProxyPass / http://127.0.0.1:{{ item.port }}/
+  ProxyPassReverse / http://127.0.0.1:{{ item.port }}/
 
   ErrorLog /var/log/httpd/error.log
 
