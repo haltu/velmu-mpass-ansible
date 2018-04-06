@@ -1,0 +1,114 @@
+---
+- hosts: localhost
+  remote_user: root
+
+  pre_tasks:
+  - name: Create group demosp
+    group:
+      name: demosp
+      state: present
+  - name: Create user demosp
+    user:
+      name: demosp
+      comment: "DEMOSP Service"
+      group: demosp
+  - name: Set demosp's home dir permissions
+    file:
+      path: /home/demosp
+      state: directory
+      owner: demosp
+      group: demosp
+      mode: 0711
+  - name: Create demosp's .ssh
+    file:
+      path: /home/demosp/.ssh
+      state: directory
+      owner: demosp
+      group: demosp
+      mode: 0700
+  - name: Import bitbucket.org SSH key
+    known_hosts:
+      path: /home/demosp/.ssh/known_hosts
+      name: bitbucket.org
+      key: "bitbucket.org ssh-rsa AAAAB3NzaC1yc2EAAAABIwAAAQEAubiN81eDcafrgMeLzaFPsw2kNvEcqTKl/VqLat/MaB33pZy0y3rJZtnqwR2qOOvbwKZYKiEO1O6VqNEBxKvJJelCq0dTXWT5pbO2gDXC6h6QDXCaHo6pOHGPUy+YBaGQRGuSusMEASYiWunYN0vCAI8QaXnWMXNMdFP3jHAJH0eDsoiGnLPBlBp4TNm6rYI74nMzgz3B9IikW4WVK+dc8KZJZWYjAuORU3jc1c/NPskD2ASinf8v3xnfXeukU0sJ5N6m5E8VLjObPEO+mN2t/FZTMZLiFqPWc/ALSqnMnnhwrNi2rbfg/rd/IpL8Le3pSBne8+seeFVBoGqzHM9yXw=="
+  - name: Import code.haltu.net SSH key
+    known_hosts:
+      path: /home/demosp/.ssh/known_hosts
+      name: code.haltu.net
+      key: "code.haltu.net ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCy9CUSBbe+crCXSRzVZ4nNIQRWYUiqC3fk5JZkuBa05BMpkK6dmG0oZ7H5Z4gQ1OQZcIfLP8uT6O2+SUpbn6u5DVQxIDBVNUETgGPSyNTgURi/9mEktxUgjD4mQzKFdX5+UdqvzhCut1+1asVWsRPrMwStLJn0YlK8wf/6bZnfmgQfvCP4yx9ney1F9M453uSPHfwB0ETfVpRFPZBy7eI1HizdB5BxcvE+gvYScLr7BkjA6JgKWiyBpjXM5+KAtjEvQ6z1Nm/3lFX3iL1UZBOT0oEh19SgtWM9QsBgdDaF6nPomX6WPnH5MrMx+UISLixm7Sh2GbVX54SR26xdsPEj"
+  - name: Set known hosts permissions
+    file:
+      path: /home/demosp/.ssh/known_hosts
+      owner: demosp
+      group: demosp
+      mode: 0600
+  - name: Create demosp's .buildout
+    file:
+      path: /home/demosp/.buildout
+      state: directory
+      owner: demosp
+      group: demosp
+      mode: 0755
+  - name: Copy mr.developer.cfg
+    copy:
+      src: /srv/ansible/files/buildout_mrdeveloper.cfg
+      dest: /home/demosp/.buildout/mr.developer.cfg
+      owner: demosp
+      group: demosp
+      mode: 0644
+  - name: Insert local_settings.py
+    template:
+      src: /srv/ansible/files/local_settings_demosp.py.j2
+      dest: /home/demosp/local_settings_{{ item }}.py
+      owner: demosp
+      group: demosp
+      mode: 0644
+    with_items:
+      - one
+      - two
+      - three
+      - four
+      - five
+  - name: Insert newrelic.ini
+    template:
+      src: /srv/ansible/files/newrelic.ini.j2
+      dest: /home/demosp/newrelic.ini
+      owner: demosp
+      group: demosp
+      mode: 0644
+  - name: Activate demosp's virtualenv
+    lineinfile:
+      path: /home/demosp/.bash_profile
+      line: "source $HOME/venv/bin/activate"
+
+  tasks:
+  - name: Include user apache to group demosp
+    user:
+      name: apache
+      groups: demosp
+  - name: Include user root to group demosp
+    user:
+      name: root
+      groups: demosp
+  - name: Include user demosp to group bew
+    user:
+      name: demosp
+      groups: bew
+
+  post_tasks:
+  - name: Overwrite Supervisor config
+    copy:
+      src: /srv/ansible/files/supervisord.conf
+      dest: /etc/supervisor/supervisord.conf
+      owner: root
+      group: root
+      mode: 0644
+  - name: Restart Supervisor
+    service:
+      name: supervisord
+      state: restarted
+      enabled: yes
+
+  vars_files:
+  - group_vars/vars
+  - group_vars/vault

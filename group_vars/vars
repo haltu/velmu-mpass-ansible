@@ -1,12 +1,28 @@
 ---
 bew_fqdn: demo.velmu.fi
 bew_port: 8001
+one_fqdn: one.demo.velmu.fi
+one_port: 8002
+two_fqdn: two.demo.velmu.fi
+two_port: 8003
+three_fqdn: three.demo.velmu.fi
+three_port: 8004
+four_fqdn: four.demo.velmu.fi
+four_port: 8005
+five_fqdn: five.demo.velmu.fi
+five_port: 8006
 
 postgresql_databases:
   - name: "{{ vault_postgresql_database }}"
 postgresql_users:
   - name: "{{ vault_postgresql_user }}"
     password: "{{ vault_postgresql_password }}"
+
+postgresql_databases_demosp:
+  - name: "{{ vault_postgresql_database_demosp }}"
+postgresql_users:
+  - name: "{{ vault_postgresql_user_demosp }}"
+    password: "{{ vault_postgresql_password_demosp }}"
 
 redis_requirepass: "{{ vault_redis_password }}"
 
@@ -62,9 +78,74 @@ supervisor_programs:
       stderr_logfile=syslog
       stdout_logfile=syslog
       user=bew
+  - name: 'demosp_gunicorn_one'
+    command: /home/demosp/demosp/bin/newrelic-admin run-program /home/demosp/demosp/bin/gunicorn --reload --bind 0.0.0.0:8002 -w 2 --max-requests 1000 -t 120 --env DJANGO_SETTINGS_MODULE=local_settings_one project.wsgi:application
+    state: present
+    configuration: |
+      environment=LANG="en_US.utf8", LC_ALL="en_US.UTF-8", LC_LANG="en_US.UTF-8", HTTPS="on", DJANGO_SETTINGS_MODULE="local_settings_one", NEW_RELIC_CONFIG_FILE="newrelic.ini"
+      autorestart=true
+      autostart=true
+      directory=/home/demosp/demosp
+      redirect_stderr=true
+      stderr_logfile=syslog
+      stdout_logfile=syslog
+      user=demosp
+  - name: 'demosp_gunicorn_two'
+    command: /home/demosp/demosp/bin/newrelic-admin run-program /home/demosp/demosp/bin/gunicorn --reload --bind 0.0.0.0:8003 -w 2 --max-requests 1000 -t 120 --env DJANGO_SETTINGS_MODULE=local_settings_two project.wsgi:application
+    state: present
+    configuration: |
+      environment=LANG="en_US.utf8", LC_ALL="en_US.UTF-8", LC_LANG="en_US.UTF-8", HTTPS="on", DJANGO_SETTINGS_MODULE="local_settings_two", NEW_RELIC_CONFIG_FILE="newrelic.ini"
+      autorestart=true
+      autostart=true
+      directory=/home/demosp/demosp
+      redirect_stderr=true
+      stderr_logfile=syslog
+      stdout_logfile=syslog
+      user=demosp
+  - name: 'demosp_gunicorn_three'
+    command: /home/demosp/demosp/bin/newrelic-admin run-program /home/demosp/demosp/bin/gunicorn --reload --bind 0.0.0.0:8004 -w 2 --max-requests 1000 -t 120 --env DJANGO_SETTINGS_MODULE=local_settings_three project.wsgi:application
+    state: present
+    configuration: |
+      environment=LANG="en_US.utf8", LC_ALL="en_US.UTF-8", LC_LANG="en_US.UTF-8", HTTPS="on", DJANGO_SETTINGS_MODULE="local_settings_three", NEW_RELIC_CONFIG_FILE="newrelic.ini"
+      autorestart=true
+      autostart=true
+      directory=/home/demosp/demosp
+      redirect_stderr=true
+      stderr_logfile=syslog
+      stdout_logfile=syslog
+      user=demosp
+  - name: 'demosp_gunicorn_four'
+    command: /home/demosp/demosp/bin/newrelic-admin run-program /home/demosp/demosp/bin/gunicorn --reload --bind 0.0.0.0:8005 -w 2 --max-requests 1000 -t 120 --env DJANGO_SETTINGS_MODULE=local_settings_four project.wsgi:application
+    state: present
+    configuration: |
+      environment=LANG="en_US.utf8", LC_ALL="en_US.UTF-8", LC_LANG="en_US.UTF-8", HTTPS="on", DJANGO_SETTINGS_MODULE="local_settings_four", NEW_RELIC_CONFIG_FILE="newrelic.ini"
+      autorestart=true
+      autostart=true
+      directory=/home/demosp/demosp
+      redirect_stderr=true
+      stderr_logfile=syslog
+      stdout_logfile=syslog
+      user=demosp
+  - name: 'demosp_gunicorn_five'
+    command: /home/demosp/demosp/bin/newrelic-admin run-program /home/demosp/demosp/bin/gunicorn --reload --bind 0.0.0.0:8006 -w 2 --max-requests 1000 -t 120 --env DJANGO_SETTINGS_MODULE=local_settings_five project.wsgi:application
+    state: present
+    configuration: |
+      environment=LANG="en_US.utf8", LC_ALL="en_US.UTF-8", LC_LANG="en_US.UTF-8", HTTPS="on", DJANGO_SETTINGS_MODULE="local_settings_five", NEW_RELIC_CONFIG_FILE="newrelic.ini"
+      autorestart=true
+      autostart=true
+      directory=/home/demosp/demosp
+      redirect_stderr=true
+      stderr_logfile=syslog
+      stdout_logfile=syslog
+      user=demosp
 
 virtualenv_user: bew
 virtualenv_path: /home/bew/venv
+virtualenv_requirements:
+  - /srv/ansible/files/requirements.txt
+
+virtualenv_user: demosp
+virtualenv_path: /home/demosp/venv
 virtualenv_requirements:
   - /srv/ansible/files/requirements.txt
 
