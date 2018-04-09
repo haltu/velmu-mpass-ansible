@@ -94,6 +94,10 @@
     user:
       name: demosp
       groups: bew
+  - name: Include user bew to group demosp
+    user:
+      name: bew
+      groups: demosp
 
   post_tasks:
   - name: Overwrite Supervisor config
@@ -111,4 +115,5 @@
 
   vars_files:
   - group_vars/vars
+  - group_vars/demosp
   - group_vars/vault

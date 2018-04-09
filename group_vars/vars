@@ -137,16 +137,6 @@ supervisor_programs:
       stdout_logfile=syslog
       user=demosp
 
-virtualenv_user: bew
-virtualenv_path: /home/bew/venv
-virtualenv_requirements:
-  - /srv/ansible/files/requirements.txt
-
-virtualenv_user: demosp
-virtualenv_path: /home/demosp/venv
-virtualenv_requirements:
-  - /srv/ansible/files/requirements.txt
-
 rabbitmq_user: "{{ vault_rabbitmq_user }}"
 rabbitmq_password: "{{ vault_rabbitmq_password }}"
 rabbitmq_vhost: "dev"

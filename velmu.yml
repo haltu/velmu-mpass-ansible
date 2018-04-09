@@ -132,6 +132,7 @@
 
   vars_files:
   - group_vars/vars
+  - group_vars/velmu
   - group_vars/vault
 
   roles:

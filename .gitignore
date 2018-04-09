@@ -1,5 +1,5 @@
 .vagrant/
-velmu.retry
+*.retry
 group_vars/vault
 files_shibboleth/*.pem
 files_shibboleth/velmu-demo.xml
