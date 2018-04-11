@@ -1,0 +1,5 @@
+virtualenv_user: bew
+virtualenv_path: /home/bew/venv
+virtualenv_requirements:
+  - /srv/ansible/files/requirements.txt
+

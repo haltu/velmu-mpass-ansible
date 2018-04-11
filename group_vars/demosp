@@ -1,0 +1,4 @@
+virtualenv_user: demosp
+virtualenv_path: /home/demosp/venv
+virtualenv_requirements:
+  - /srv/ansible/files/requirements.txt

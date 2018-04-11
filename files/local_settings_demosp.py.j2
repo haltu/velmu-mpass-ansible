@@ -3,23 +3,24 @@ from project.production import *
 ALLOWED_HOSTS = ['127.0.0.1', 'localhost', 'demo.velmu.fi', 'one.demo.velmu.fi', 'two.demo.velmu.fi', 'three.demo.velmu.fi', 'four.demo.velmu.fi', 'five.demo.velmu.fi']
 DEBUG=False
 
-SECRET_KEY = '{{ vault_secret_key }}'
+SECRET_KEY = '{{ vault_secret_key_demosp }}'
 
 DATABASES = {
   'default': {
     'ENGINE': 'django.db.backends.postgresql_psycopg2',
-    'NAME': '{{ vault_postgresql_database }}',
-    'USER': '{{ vault_postgresql_user }}',
-    'PASSWORD': '{{ vault_postgresql_password }}',
+    'NAME': '{{ vault_postgresql_database_demosp }}',
+    'USER': '{{ vault_postgresql_user_demosp }}',
+    'PASSWORD': '{{ vault_postgresql_password_demosp }}',
     'HOST': 'localhost',
     'PORT': '5432',
   }
 }
 
-CELERY_BROKER_URL = 'amqp://{{ rabbitmq_user }}:{{ rabbitmq_password }}@localhost:5672/{{ rabbitmq_vhost }}'
-
 SENTRY_DSN = '{{ sentry_dsn }}'
-SENTRY_SITE = '{{ bew_fqdn }}'
+SENTRY_SITE = '{{ item }}.demo.velmu.fi'
+
+SESSION_COOKIE_NAME = '{{ item }}appsid'
+DEMOSP_TEMPLATE_NAME = 'demosp/{{ item }}.html'
 
 LOGGING = {
   'version': 1,
@@ -55,7 +56,7 @@ LOGGING = {
     'file_logger': {
       'level': 'DEBUG',
       'class': 'logging.handlers.RotatingFileHandler',
-      'filename': '/home/bew/django_debug.log',
+      'filename': '/home/demosp/django_debug_{{ item }}.log',
       'maxBytes': 1024 * 1024 * 5,
       'backupCount': 10,
       'formatter': 'normal',
@@ -76,16 +77,6 @@ LOGGING = {
     'newrelic': {
       'level': 'WARNING',
       'handlers': ['console', 'file_logger'],
-      'propagate': False,
-    },
-    'celery': {
-      'level': 'INFO',
-      'handlers': ['console', 'file_logger', 'sentry'],
-      'propagate': False,
-    },
-    'celery.tasks': {
-      'level': 'INFO',
-      'handlers': ['console', 'file_logger', 'sentry'],
       'propagate': False,
     },
     'django': {

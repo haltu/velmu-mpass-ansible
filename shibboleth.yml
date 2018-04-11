@@ -82,6 +82,19 @@
       owner: root
       group: root
       mode: 0644
+  - name: Insert Apache subvhost config
+    template:
+      src: /srv/ansible/files_shibboleth/apache-subvhost.conf.j2
+      dest: /etc/httpd/conf.d/002-vhost-{{ item.name }}.conf
+      owner: root
+      group: root
+      mode: 0644
+    with_items:
+      - { name: 'one', port: '{{ one_port }}' }
+      - { name: 'two', port: '{{ two_port }}' }
+      - { name: 'three', port: '{{ three_port }}' }
+      - { name: 'four', port: '{{ four_port }}' }
+      - { name: 'five', port: '{{ five_port }}' }
 
   post_tasks:
   - name: Restart Shibboleth
