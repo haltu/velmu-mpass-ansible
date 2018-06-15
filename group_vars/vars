@@ -174,4 +174,4 @@ certbot_create_command: "{{ certbot_script }} certonly --standalone --noninterac
 certbot_create_standalone_stop_services:
   - httpd
 
-certbot_auto_renew_options: "--quiet --no-self-upgrade --pre-hook \"systemctl stop httpd\" --post-hook \"systemctl start httpd\""
+certbot_auto_renew_options: "--quiet --standalone --no-self-upgrade --pre-hook \"systemctl stop httpd\" --post-hook \"systemctl start httpd\""
